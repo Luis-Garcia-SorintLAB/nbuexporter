@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  build:
+  build artifact:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -32,4 +32,17 @@ jobs:
       with:
         name: nbuexporter
         path: /home/runner/work/nbuexporter/nbuexporter/nbuexporter
+  
+  build image:
+    needs: build artifact
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
 
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+        with:
+          name: nbuexporter
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
