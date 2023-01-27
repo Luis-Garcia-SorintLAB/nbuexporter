@@ -11,7 +11,8 @@ on:
 
 jobs:
 
-  build artifact:
+  artifact:
+    name: Build nbuexporter artifact
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -33,8 +34,9 @@ jobs:
         name: nbuexporter
         path: /home/runner/work/nbuexporter/nbuexporter/nbuexporter
   
-  build image:
-    needs: build artifact
+  image:
+    name: Build docker image
+    needs: artifact
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
