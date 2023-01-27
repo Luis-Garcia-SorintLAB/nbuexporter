@@ -45,6 +45,9 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: nbuexporter
+
+    - name: Show nbuexporter path
+      run: ls -la ./ && pwd
     
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
