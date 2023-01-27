@@ -3,4 +3,5 @@ RUN mkdir output
 RUN mkdir config
 COPY nbuexporter .
 COPY servers/* ./config
-CMD ["sh nbuexporter"]
+ENTRYPOINT ["/bin/sh -c"]
+CMD ["nbuexporter"]
