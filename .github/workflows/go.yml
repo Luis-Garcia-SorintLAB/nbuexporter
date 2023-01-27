@@ -31,5 +31,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: nbuexporter
-        path: /home/runner/work/nbuexporter/nbuexporter
+        path: /home/runner/work/nbuexporter/nbuexporter/nbuexporter
 
