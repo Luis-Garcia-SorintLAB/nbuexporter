@@ -39,17 +39,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Extract Version
-      run: |
-        echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/v"}"
-        echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
-        echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
-  
-    - name: Print Version
-      run: |
-        echo ${{steps.version_step.outputs.version_tag}}
-        echo ${{steps.version_step.outputs.latest_tag}}
-
     - name: Download artifact
       uses: actions/download-artifact@v3
       with:
