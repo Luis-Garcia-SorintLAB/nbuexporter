@@ -4,14 +4,12 @@
 name: Go
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 jobs:
 
-  artifact:
+  build_artifact:
     name: Build nbuexporter artifact
     runs-on: ubuntu-latest
     steps:
@@ -34,12 +32,23 @@ jobs:
         name: nbuexporter
         path: /home/runner/work/nbuexporter/nbuexporter/nbuexporter
   
-  image:
+  build_image:
     name: Build docker image
-    needs: artifact
+    needs: build_artifact
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    - name: Extract Version
+      run: |
+        echo "##[set-output name=version;]VERSION=${GITHUB_REF#$"refs/tags/v"}"
+        echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
+        echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
+  
+    - name: Print Version
+      run: |
+        echo ${{steps.version_step.outputs.version_tag}}
+        echo ${{steps.version_step.outputs.latest_tag}}
 
     - name: Download artifact
       uses: actions/download-artifact@v3
@@ -53,7 +62,7 @@ jobs:
     #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
     - name: Login to DockerHub
-      uses: docker/login-action@v1
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
