@@ -1,12 +1,4 @@
-FROM golang:1.19.5 AS builder
-
-ARG VERSION=dev
-
-WORKDIR /go/src/app
-COPY main.go .
-RUN go build -o main -ldflags=-X=main.version=${VERSION} main.go 
-
-FROM debian:buster-slim
-COPY --from=builder /go/src/app/main /go/bin/main
-ENV PATH="/go/bin:${PATH}"
-CMD ["main"]
+FROM alpine:3.17 AS builder
+COPY /home/runner/work/nbuexporter/nbuexporter/nbuexporter .
+RUN ./nbuexporter
+CMD ["/bin/sh"]
