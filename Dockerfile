@@ -1,7 +1,6 @@
-FROM alpine:3.17 AS builder
+FROM gcc:11.3.0
 RUN mkdir output
 RUN mkdir config
 COPY nbuexporter .
-COPY servers/* ./config
-ENTRYPOINT ["/bin/sh -c"]
-CMD ["nbuexporter"]
+COPY servers/ ./config
+CMD ["./nbuexporter"]
